@@ -1,5 +1,7 @@
 const puppeteer = require('puppeteer');
+const { convertHistory } = require('./domToJson');
 
+// should I get by top performance overall, or fastest growing player?
 const getTopPlayerUrl = async () => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -9,16 +11,19 @@ const getTopPlayerUrl = async () => {
   return url;
 };
 
+
+/// NEW PLAN
+// use p attribute in url for player tag
+// use that to gather CSVs via standard api url
 const getPlayerReport = async (url) => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  await page.goto(url);
-  // convert history DOM to JSON
-  // check pending orders?
-  // check current holdings
+  await convertHistory(page, url);
+  // domToJson
+
 }
 
 module.exports = {
   getTopPlayerUrl,
-  watchPlayer,
+  getPlayerReport,
 };
