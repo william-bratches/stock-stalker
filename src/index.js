@@ -1,3 +1,3 @@
-const { goToTopPlayer, watchPlayer } = require('./report');
+const { getTopPlayerUrl, watchPlayer } = require('./report');
 
-goToTopPlayer().then(console.log);
+getTopPlayerUrl().then(console.log);

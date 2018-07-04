@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 
-const goToTopPlayer = async () => {
+const getTopPlayerUrl = async () => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto('https://www.marketwatch.com/game/official-reddit-challenge-2018');
@@ -9,15 +9,16 @@ const goToTopPlayer = async () => {
   return url;
 };
 
-const watchPlayer = async (url) => {
+const getPlayerReport = async (url) => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto(url);
   // convert history DOM to JSON
   // check pending orders?
+  // check current holdings
 }
 
 module.exports = {
-  goToTopPlayer,
+  getTopPlayerUrl,
   watchPlayer,
 };
