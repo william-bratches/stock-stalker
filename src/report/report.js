@@ -22,7 +22,18 @@ const getPlayerReport = async (url) => {
   const page = await browser.newPage();
   const playerId = getTopPlayerUrl(url);
   const csvUrl = `https://www.marketwatch.com/game/${GAME_NAME}/download?view=transactions&amp;count=16&amp;p=${playerId}`;
-  // DL through axios a possibility?
+  const file = await this.page.evaluate(() => {
+    return fetch(csvUrl, { method: 'GET', credentials: 'include' })
+      .then(res => res.text());
+  });
+
+  return file;
+}
+
+const watchPlayer = async(url) => {
+  const file = await getPlayerReport(url);
+  // every 80 seconds, get new copy of report
+  // check to see if any changes have been made
 }
 
 module.exports = {
