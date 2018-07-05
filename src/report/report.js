@@ -22,6 +22,7 @@ const getPlayerReport = async (url) => {
   const page = await browser.newPage();
   const playerId = getTopPlayerUrl(url);
   const csvUrl = `https://www.marketwatch.com/game/${GAME_NAME}/download?view=transactions&amp;count=16&amp;p=${playerId}`;
+  // DL through axios a possibility?
 }
 
 module.exports = {
