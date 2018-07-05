@@ -22,7 +22,17 @@ const getPlayerReport = async (url) => {
   const page = await browser.newPage();
   const playerId = getTopPlayerUrl(url);
   const csvUrl = `https://www.marketwatch.com/game/${GAME_NAME}/download?view=transactions&amp;count=16&amp;p=${playerId}`;
-  const file = await this.page.evaluate(() => $('.transactions a')[0].click());
+  const file = await this.page.evaluate(() => {
+    return fetch(csvUrl, { credentials: 'same-origin', responseType: 'arraybuffer' })
+      .then(response => response.arrayBuffer())
+      .then(arrayBuffer => {
+        const bufString = arrayBufferToString(arrayBuffer);
+        return window.writeABString(bufstring, '/tmp/downloadtest.pdf');
+      });
+ });
+
+
+  });
   return file;
 }
 
