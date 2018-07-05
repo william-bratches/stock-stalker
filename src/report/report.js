@@ -22,16 +22,16 @@ const getPlayerReport = async (url) => {
   const page = await browser.newPage();
   const playerId = getTopPlayerUrl(url);
   const csvUrl = `https://www.marketwatch.com/game/${GAME_NAME}/download?view=transactions&amp;count=16&amp;p=${playerId}`;
-  const file = await this.page.evaluate(() => {
-    return fetch(csvUrl, { method: 'GET', credentials: 'include' })
-      .then(res => res.text());
-  });
-
+  const file = await this.page.evaluate(() => $('.transactions a')[0].click());
   return file;
 }
 
 const watchPlayer = async(url) => {
-  const file = await getPlayerReport(url);
+  setInterval(() => {
+    const file = await getPlayerReport(url);
+    // if timestamp is greater
+    // go wild, otherwise pass
+  }, 80000);
   // every 80 seconds, get new copy of report
   // check to see if any changes have been made
 }
