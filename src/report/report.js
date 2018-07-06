@@ -1,5 +1,4 @@
 const puppeteer = require('puppeteer');
-const { convertHistory } = require('./domToJson');
 const GAME_NAME = 'official-reddit-challenge-2018'
 
 // should I get by top performance overall, or fastest growing player?
