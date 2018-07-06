@@ -30,14 +30,11 @@ const getPlayerReport = async (url) => {
         return window.writeABString(bufstring, '/tmp/downloadtest.pdf');
       });
  });
-
-
-  });
-  return file;
+ return file;
 }
 
-const watchPlayer = async(url) => {
-  setInterval(() => {
+const watchPlayer = (url) => {
+  setInterval(async () => {
     const file = await getPlayerReport(url);
     // if timestamp is greater
     // go wild, otherwise pass
