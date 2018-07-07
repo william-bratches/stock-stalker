@@ -13,19 +13,23 @@ const getTopPlayerUrl = async () => {
 
 const getPlayerIdFromUrl = (url) => {
   const parsedUrl = new URL(url);
-  return url.searchParams.get('p');
+  return parsedUrl.searchParams.get('p');
 }
 
 const getPlayerReport = async (url) => {
+  console.log('fetching player report...');
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  const playerId = getTopPlayerUrl(url);
+  const playerId = getPlayerIdFromUrl(url);
+  console.log(playerId);
   const csvUrl = `https://www.marketwatch.com/game/${GAME_NAME}/download?view=transactions&amp;count=16&amp;p=${playerId}`;
-  const file = await this.page.evaluate(() => {
+  const file = await page.evaluate(() => {
     return fetch(csvUrl, { credentials: 'same-origin', responseType: 'arraybuffer' })
       .then(response => response.arrayBuffer())
       .then(arrayBuffer => {
+        console.log(arrayBuffer);
         const bufString = arrayBufferToString(arrayBuffer);
+        console.log(bufString);
         return window.writeABString(bufstring, '/tmp/downloadtest.pdf');
       });
  });
