@@ -12,7 +12,12 @@ module.exports = () => {
 
   // yeah, I already tried using moment()
   const parseDate = (dateString) => {
-
+    const [date, time] = dateString.split(' ');
+    const parsedDate = new Date(date);
+    const hours = time[time.length - 1] === 'p' ? parseInt(time[0], 10) + 12 : parseInt(time[0], 10);
+    const minutes = `${time[2]}${time[3]}`;
+    parsedDate.setHours(hours, minutes);
+    return parsedDate;
   };
 
   const parseTransactionRow = (node) => {
@@ -28,10 +33,16 @@ module.exports = () => {
 
   const massage = (history) => {
     return history.map((transaction) => {
+      const orderDate = tableLabelMap[1];
+      const transactionDate = tableLabelMap[2];
+      const amount = tableLabelMap[4];
+      const price = tableLabelMap[5];
+      const volume = tableLabelMap[6];
+
       return Object.assign({}, transaction, {
-        [tableLabelMap[1]]: new Date(transaction[tableLabelMap[1]]),
-        [tableLabelMap[2]]: new Date(transaction[tableLabelMap[2]]),
-        [tableLabelMap[6]]: transaction[tableLabelMap[4]] * transaction[tableLabelMap[5]],
+        [orderDate]: parseDate(transaction[orderDate]),
+        [transactionDate]: parseDate(transaction[transactionDate]),
+        [volume]: transaction[amount] * transaction[price],
       });
     });
   };
