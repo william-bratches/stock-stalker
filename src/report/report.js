@@ -4,8 +4,23 @@ const puppeteer = require('puppeteer');
 
 const GAME_NAME = 'official-reddit-challenge-2018';
 
-const parseTransactionRow = (node) => {
+const tableLabelMap = {
+  0: 'Symbol',
+  1: 'Order Date',
+  2: 'Transaction Date',
+  3: 'Type',
+  4: 'Amount',
+  5: 'Price',
+  6: 'Volume',
+}
 
+const parseTransactionRow = (node) => {
+  const cells = node.querySelectorAll('td');
+  return cells.reduce((acc, cell, index) => {
+    const label = tableLabelMap[index];
+    return Object.assign({}, acc, { [label]: cell.innerText });
+    cell.innerText
+  }, {});
 };
 
 // should I get by top performance overall, or fastest growing player?
