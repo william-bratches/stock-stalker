@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const { parseHistoryFromDom } = require('./domParser');
+const parseHistoryFromDom = require('./domParser');
 
 const GAME_NAME = 'official-reddit-challenge-2018';
 
@@ -17,6 +17,7 @@ const getPlayerReport = async (url) => {
   const page = await browser.newPage();
   await page.goto(url);
   const history = await page.evaluate(parseHistoryFromDom);
+  console.log(history);
   await browser.close();
   return history;
 };
