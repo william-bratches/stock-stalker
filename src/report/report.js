@@ -1,6 +1,12 @@
 const puppeteer = require('puppeteer');
 
+// PLAN C: parse table to array via pupeteer
+
 const GAME_NAME = 'official-reddit-challenge-2018';
+
+const parseTransactionRow = (node) => {
+
+};
 
 // should I get by top performance overall, or fastest growing player?
 const getTopPlayerUrl = async () => {
@@ -12,24 +18,19 @@ const getTopPlayerUrl = async () => {
   return url;
 };
 
-// const getPlayerIdFromUrl = (url) => {
-//   const parsedUrl = new URL(url);
-//   return parsedUrl.searchParams.get('p');
-// };
-
-
 const getPlayerReport = async (url) => {
-  console.log('fetching player report...');
+  console.log(url);
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  // const playerId = getPlayerIdFromUrl(url);
-  // const csvUrl = `https://www.marketwatch.com/game/${GAME_NAME}/download?view=transactions&amp;count=16&amp;p=${playerId}`;
+  await page.goto(url);
   const file = await page.evaluate(() => {
-    const tempHardCodedUrl = 'https://www.marketwatch.com/game/official-reddit-challenge-2018/download?view=transactions&amp;count=16&amp;p=2349626';
-    return fetch(tempHardCodedUrl, { credentials: 'same-origin', responseType: 'arraybuffer' })
-      .then(res => res.json())
-      .then(console.log)
-      .catch(console.log);
+    $('.ranking')[0].querySelector('tbody').childNodes.reduce((acc, node) => {
+      const transactionRecord = parseTransactionRow(node);
+
+    }, []);
+
+    // cycle through table, reduce to object
+
   });
   return file;
 };
