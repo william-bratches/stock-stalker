@@ -38,11 +38,13 @@ module.exports = () => {
       const amount = tableLabelMap[4];
       const price = tableLabelMap[5];
       const volume = tableLabelMap[6];
+      const parsedPrice = parseFloat(transaction[price].slice(1), 10);
+      const parsedAmount = parseInt(transaction[amount].replace(/,/g, ''), 10);
 
       return Object.assign({}, transaction, {
         [orderDate]: parseDate(transaction[orderDate]).toString(),
         [transactionDate]: parseDate(transaction[transactionDate]).toString(),
-        [volume]: transaction[amount] * transaction[price],
+        [volume]: `$${Math.ceil((parsedPrice * parsedAmount) * 100) / 100}`,
       });
     });
   };
