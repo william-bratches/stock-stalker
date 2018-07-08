@@ -23,7 +23,6 @@ const parseTransactionRow = (node) => {
   }, {});
 };
 
-// should I get by top performance overall, or fastest growing player?
 const getTopPlayerUrl = async () => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -37,13 +36,15 @@ const getPlayerReport = async (url) => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto(url);
-  const transactionHistory = await page.evaluate(() => {
-    return $('.ranking')[0].querySelector('tbody').querySelectorAll('tr').reduce((acc, node) => {
-      const transactionRecord = parseTransactionRow(node);
-      return acc.concat([transactionRecord]);
-    }, []);
+  const rows = await page.evaluate(() => {
+    return $('.ranking')[0].querySelector('tbody').querySelectorAll('tr');
   });
-  return transactionHistory;
+
+  // convert HTML nodelist to array of objects
+  return Array.from(rows).reduce((acc, node) => {
+    const transactionRecord = parseTransactionRow(node);
+    return acc.concat([transactionRecord]);
+  }, []);
 };
 
 // const watchPlayer = (url) => {
