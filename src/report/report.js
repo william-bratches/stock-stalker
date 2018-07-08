@@ -4,24 +4,7 @@ const puppeteer = require('puppeteer');
 
 const GAME_NAME = 'official-reddit-challenge-2018';
 
-const tableLabelMap = {
-  0: 'Symbol',
-  1: 'Order Date',
-  2: 'Transaction Date',
-  3: 'Type',
-  4: 'Amount',
-  5: 'Price',
-  6: 'Volume',
-}
 
-const parseTransactionRow = (node) => {
-  const cells = node.querySelectorAll('td');
-  return cells.reduce((acc, cell, index) => {
-    const label = tableLabelMap[index];
-    return Object.assign({}, acc, { [label]: cell.innerText });
-    cell.innerText
-  }, {});
-};
 
 const getTopPlayerUrl = async () => {
   const browser = await puppeteer.launch();
@@ -36,15 +19,39 @@ const getPlayerReport = async (url) => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto(url);
-  const rows = await page.evaluate(() => {
-    return $('.ranking')[0].querySelector('tbody').querySelectorAll('tr');
+  const transactionHistory = await page.evaluate(() => {
+    // due to limitations with evaluate, we have to write all code within scope :(
+    const tableLabelMap = {
+      0: 'Symbol',
+      1: 'Order Date',
+      2: 'Transaction Date',
+      3: 'Type',
+      4: 'Amount',
+      5: 'Price',
+      6: 'Volume',
+    }
+
+    const parseTransactionRow = (node) => {
+      const cells = node.querySelectorAll('td');
+      const acc = {};
+      return cells.forEach((cell, index) => {
+        const label = tableLabelMap[index];
+        return Object.assign(acc, { [label]: cell.innerText });
+      });
+    };
+
+    // iterate through HTML table, construct array of objects
+    const history = [];
+    $('.ranking')[0].querySelector('tbody').querySelectorAll('tr').forEach((node) => {
+      const transactionRecord = parseTransactionRow(node);
+      history.push(transactionRecord);
+    });
+
+    return history;
   });
 
-  // convert HTML nodelist to array of objects
-  return Array.from(rows).reduce((acc, node) => {
-    const transactionRecord = parseTransactionRow(node);
-    return acc.concat([transactionRecord]);
-  }, []);
+  await browser.close();
+  return transactionHistory;
 };
 
 // const watchPlayer = (url) => {
