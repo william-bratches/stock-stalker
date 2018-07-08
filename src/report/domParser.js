@@ -14,9 +14,10 @@ module.exports = () => {
   const parseDate = (dateString) => {
     const [date, time] = dateString.split(' ');
     const parsedDate = new Date(date);
-    const hours = time[time.length - 1] === 'p' ? parseInt(time[0], 10) + 12 : parseInt(time[0], 10);
-    const minutes = `${time[2]}${time[3]}`;
-    parsedDate.setHours(hours, minutes);
+    const [hours, minutes] = time.split(':');
+    const parsedMinutes = minutes.slice(0, -1);
+    const parsedHours = time[time.length - 1] === 'p' ? parseInt(hours, 10) + 12 : parseInt(hours, 10);
+    parsedDate.setHours(parsedHours, parsedMinutes);
     return parsedDate;
   };
 
