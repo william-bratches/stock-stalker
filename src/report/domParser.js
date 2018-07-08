@@ -1,13 +1,18 @@
 // due to limitatiosn with pupeteer evaluate(), all code must be within same scope
 module.exports = () => {
   const tableLabelMap = {
-    0: 'Symbol',
-    1: 'Order Date',
-    2: 'Transaction Date',
-    3: 'Type',
-    4: 'Amount',
-    5: 'Price',
-    6: 'Volume',
+    0: 'symbol',
+    1: 'orderDate',
+    2: 'transactionDate',
+    3: 'type',
+    4: 'amount',
+    5: 'price',
+    6: 'volume',
+  };
+
+  // yeah, I already tried using moment()
+  const parseDate = (dateString) => {
+
   };
 
   const parseTransactionRow = (node) => {
@@ -21,6 +26,16 @@ module.exports = () => {
     return acc;
   };
 
+  const massage = (history) => {
+    return history.map((transaction) => {
+      return Object.assign({}, transaction, {
+        [tableLabelMap[1]]: new Date(transaction[tableLabelMap[1]]),
+        [tableLabelMap[2]]: new Date(transaction[tableLabelMap[2]]),
+        [tableLabelMap[6]]: transaction[tableLabelMap[4]] * transaction[tableLabelMap[5]],
+      });
+    });
+  };
+
   const parseHistoryFromDom = () => {
     const history = []; // reduce doesn't work on nodeLists.
     $('.ranking')[0].querySelector('tbody').querySelectorAll('tr').forEach((node) => {
@@ -28,7 +43,7 @@ module.exports = () => {
       history.push(transactionRecord);
     });
 
-    return history;
+    return massage(history);
   };
 
   return parseHistoryFromDom();
