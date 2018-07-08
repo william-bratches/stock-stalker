@@ -1,5 +1,8 @@
 {
   "extends": "airbnb",
+  "rules": {
+    "arrow-body-style": false  
+  },
   "globals": {
     "fetch": true,
     "$": true

@@ -19,18 +19,14 @@ const getTopPlayerUrl = async () => {
 };
 
 const getPlayerReport = async (url) => {
-  console.log(url);
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto(url);
   const file = await page.evaluate(() => {
-    $('.ranking')[0].querySelector('tbody').childNodes.reduce((acc, node) => {
+    return $('.ranking')[0].querySelector('tbody').querySelectorAll('tr').reduce((acc, node) => {
       const transactionRecord = parseTransactionRow(node);
-
+      return acc.concat([transactionRecord]);
     }, []);
-
-    // cycle through table, reduce to object
-
   });
   return file;
 };
