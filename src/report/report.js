@@ -17,7 +17,6 @@ const getPlayerReport = async (url) => {
   const page = await browser.newPage();
   await page.goto(url);
   const history = await page.evaluate(parseHistoryFromDom);
-  console.log(history);
   await browser.close();
   return history;
 };

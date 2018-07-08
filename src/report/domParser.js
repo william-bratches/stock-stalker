@@ -40,8 +40,8 @@ module.exports = () => {
       const volume = tableLabelMap[6];
 
       return Object.assign({}, transaction, {
-        [orderDate]: parseDate(transaction[orderDate]),
-        [transactionDate]: parseDate(transaction[transactionDate]),
+        [orderDate]: parseDate(transaction[orderDate]).toString(),
+        [transactionDate]: parseDate(transaction[transactionDate]).toString(),
         [volume]: transaction[amount] * transaction[price],
       });
     });
