@@ -13,10 +13,12 @@ module.exports = () => {
   const parseTransactionRow = (node) => {
     const cells = node.querySelectorAll('td');
     const acc = {};
-    return cells.forEach((cell, index) => {
+    cells.forEach((cell, index) => {
       const label = tableLabelMap[index];
       return Object.assign(acc, { [label]: cell.innerText });
     });
+
+    return acc;
   };
 
   const parseHistoryFromDom = () => {
