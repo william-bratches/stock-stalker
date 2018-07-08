@@ -37,13 +37,13 @@ const getPlayerReport = async (url) => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto(url);
-  const file = await page.evaluate(() => {
+  const transactionHistory = await page.evaluate(() => {
     return $('.ranking')[0].querySelector('tbody').querySelectorAll('tr').reduce((acc, node) => {
       const transactionRecord = parseTransactionRow(node);
       return acc.concat([transactionRecord]);
     }, []);
   });
-  return file;
+  return transactionHistory;
 };
 
 // const watchPlayer = (url) => {
