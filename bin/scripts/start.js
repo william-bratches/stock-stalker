@@ -4,8 +4,12 @@ const path = require('path');
 const defaultCb = () => {};
 const MAGENTA = "\x1b[35m";
 
+const makeDataDir = (cb = defaultCb) => {
+  return spawn('mkdir', ['/data']).on('close', cb);
+}
+
 const startMongo = (cb = defaultCb) => {
-  return spawn('mongod', ['--dbpath=/data'], {
+  return spawn('mongod', ['--dbpath=./bin/db'], {
     stdio: 'inherit',
   }).on('data', cb);
 };
@@ -18,4 +22,4 @@ const startServer = (cb = defaultcb) => {
   }).on('data', cb);
 };
 
-startMongo(startServer);
+makeDataDir(() => startMongo(() => startServer));
