@@ -1,14 +1,21 @@
-const defaultCb = () => {};
 const { spawn } = require('child_process');
+const path = require('path');
+
+const defaultCb = () => {};
 const MAGENTA = "\x1b[35m";
 
-// spawn mongo instance
 const startMongo = (cb = defaultCb) => {
   return spawn('mongod', ['--dbpath=/data'], {
     stdio: 'inherit',
-  }).on('close', (data) => {
-    console.log(MAGENTA, 'Mongo started.');
-    cb();
-  });
+  }).on('data', cb);
 };
-// spawn server instance
+
+const startServer = (cb = defaultcb) => {
+  const context = path.resolve(__dirname, '../../src');
+  return spawn('node', ['index.js'], {
+    stdio: 'inherit',
+    cwd: context,
+  }).on('data', cb);
+};
+
+startMongo(startServer);
