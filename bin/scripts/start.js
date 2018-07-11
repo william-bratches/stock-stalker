@@ -2,11 +2,10 @@ const { spawn } = require('child_process');
 const path = require('path');
 
 const defaultCb = () => {};
-const MAGENTA = "\x1b[35m";
 
 const makeDataDir = (cb = defaultCb) => {
   return spawn('mkdir', ['/data']).on('close', cb);
-}
+};
 
 const startMongo = (cb = defaultCb) => {
   return spawn('mongod', ['--dbpath=./bin/db'], {
@@ -14,7 +13,7 @@ const startMongo = (cb = defaultCb) => {
   }).on('data', cb);
 };
 
-const startServer = (cb = defaultcb) => {
+const startServer = (cb = defaultCb) => {
   const context = path.resolve(__dirname, '../../src');
   return spawn('node', ['index.js'], {
     stdio: 'inherit',
