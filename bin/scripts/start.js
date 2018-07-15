@@ -4,21 +4,26 @@ const path = require('path');
 const defaultCb = () => {};
 
 const startMongo = (cb = defaultCb) => {
-  const mongo = spawn('mongod', ['--dbpath=./bin/db'], { stdio: 'inherit' });
+  const mongo = spawn('mongod', ['--dbpath=./bin/db']);
 
   mongo.stdout.on('data', (data) => {
-    // if waiting for connections magic toString
-    // start server
+    if (data.toString().indexOf('waiting for connections on port') > -1) {
+      // eslint-disable-next-line
+      console.log('MongoDB started and ready.');
+      cb();
+    }
   });
 };
 
-const startServer = (cb = defaultCb) => {
+const startServer = () => {
+  // eslint-disable-next-line
   console.log('starting server...');
   const context = path.resolve(__dirname, '../../src');
+  console.log(context);
   return spawn('node', ['index.js'], {
     stdio: 'inherit',
     cwd: context,
-  }).on('data', cb);
+  });
 };
 
-startMongo(() => startServer());
+startMongo(startServer);
