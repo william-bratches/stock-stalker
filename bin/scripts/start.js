@@ -17,9 +17,8 @@ const startMongo = (cb = defaultCb) => {
 
 const startServer = () => {
   // eslint-disable-next-line
-  console.log('starting server...');
+  console.log('Starting server...');
   const context = path.resolve(__dirname, '../../src');
-  console.log(context);
   return spawn('node', ['index.js'], {
     stdio: 'inherit',
     cwd: context,
