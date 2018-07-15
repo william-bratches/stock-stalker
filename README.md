@@ -3,8 +3,8 @@ WIP. An experiment with pupeteer and pattern recognition...
 
 
 # Ideas
+* NOW ON: building differ and poller to tell when trade has happened
 * twilio and mongo integration? // TODO
-* figure out server startup, continuous monitoring scheme
 
 * then think about "diffing engine" for intelligent trades/portfolio matching
 * is there a free stock trading api?
