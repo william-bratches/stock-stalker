@@ -1,22 +1,26 @@
 const { getPlayerReport } = require('./report');
 const transactionHistory = require('../models/transactionHistory');
 const { hashTrade } = require('../lib/hash');
+const { getPlayerIdFromUrl } = require('../lib/parsing');
 
 const WATCH_INTERVAL = 60000;
 
-const determineIfChanged = (data, collection) => {
-  const lastTradeHash = hashTrade(data[0]);
-
-  // find latest document by insertDate
-  // compare hashes
+const getLatestHistory = async (collection, url) => {
+  const playerId = getPlayerIdFromUrl(url);
+  await collection.find(playerId);
 };
 
-const updateHistory = (hasChanged) => {
-  // if hashes don't match, insert
-  // if not, skip
+const determineIfChanged = async (data, lastDocument) => {
+  const newTradeHash = hashTrade(data[0]);
+  const oldTradeHash = lastDocument.hash;
+  return newTradeHash !== oldTradeHash;
+};
+
+const updateHistory = (collection) => {
+  return
 
 
-  // return boolean true or false in promise
+  // return new document after insert
 };
 
 const diff = (oldHistory, newHistory) => {
@@ -32,10 +36,11 @@ const watchPlayer = (url, db) => {
   setInterval(async () => {
     const data = await getPlayerReport(url);
     const collection = transactionHistory(db);
-    const hasChanged = await determineIfChanged(data, collection);
+    const oldHistory = await getLatestHistory(collection, url);
+    const hasChanged = await determineIfChanged(data, oldHistory);
 
     if (hasChanged) {
-      const { oldHistory, newHistory } = await updateHistory(data, collection, hasChanged);
+      const newHistory = await updateHistory(data, collection, hasChanged);
       const newTrades = await diff(oldHistory, newHistory);
       await alertBroker(newTrades);
     }

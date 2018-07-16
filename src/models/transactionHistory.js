@@ -1,16 +1,12 @@
 const { hashTrade } = require('../lib/hash');
-
-function getPlayerIdFromUrl(url) {
-  const parsedUrl = new URL(url);
-  return parsedUrl.searchParams.get('p');
-}
+const { getPlayerIdFromUrl } = require('../lib/parsing');
 
 function transactionHistory(db) {
   const collection = db.collection('transactionHistories');
   return {
     find(playerId) {
       return new Promise((resolve, reject) => {
-        return collection.findOne({ playerId }, (err, doc) => {
+        return collection.findOne({ playerId }).sort({ insertStamp: -1 }, (err, doc) => {
           if (err) {
             return reject(err);
           }
