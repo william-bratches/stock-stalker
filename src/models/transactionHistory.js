@@ -7,11 +7,14 @@ function transactionHistory(db) {
 
     },
     insert(data) {
-      const tradeDetails = `${data.symbol}-${data.type}-${data.price}-${data.amount}-${data.orderDate}`;
-      const doc = Object.assign({}, data, {
+      const lastTrade = data[0];
+      const lastTradeDetails = `${lastTrade.symbol}-${lastTrade.type}-${lastTrade.price}-${lastTrade.amount}-${lastTrade.orderDate}`;
+      const doc = {
+        data: data.slice(),
         insertStamp: new Date(),
-        hash: crypto.createHash('md5').update(tradeDetails).digest('hex'),
-      });
+        hash: crypto.createHash('md5').update(lastTradeDetails).digest('hex'),
+      };
+
       return collection.insert(doc);
     },
     update() {

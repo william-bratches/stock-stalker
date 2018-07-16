@@ -14,7 +14,13 @@ const updateHistory = (hasChanged) => {
   // if hashes don't match, insert
   // if not, skip
 
+
   // do diffing here?
+};
+
+const diff = (oldHistory, newHistory) => {
+  // what trades are new?
+
 };
 
 const alertBroker = () => {
@@ -26,8 +32,12 @@ const watchPlayer = (url, db) => {
     const data = await getPlayerReport(url);
     const collection = transactionHistory(db);
     const hasChanged = await determineIfChanged(data, collection);
-    await updateHistory(data, collection, hasChanged);
-    await alertBroker(hasChanged);
+
+    if (hasChanged) {
+      const { oldHistory, newHistory } = await updateHistory(data, collection, hasChanged);
+      const newTrades = await diff(oldHistory, newHistory);
+      await alertBroker(hasChanged);
+    }
   }, WATCH_INTERVAL);
 };
 
