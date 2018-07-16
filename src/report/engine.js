@@ -21,8 +21,12 @@ const updateHistory = async (collection, data, url) => {
 };
 
 const diff = (oldHistory, newHistory) => {
-  // what trades are new?
+  // we can assume data is ordered chronologically
+  const previousHash = hashTrade(oldHistory.data[0]);
+  const newHashes = newHistory.data.map(hashTrade);
 
+  const intersection = newHashes.findIndex(hash => hash === previousHash);
+  return intersection > 0 ? newHashes.slice(intersection) : [];
 };
 
 const alertBroker = () => {
