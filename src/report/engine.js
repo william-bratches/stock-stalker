@@ -15,7 +15,7 @@ const updateHistory = (hasChanged) => {
   // if not, skip
 
 
-  // do diffing here?
+  // return boolean true or false in promise
 };
 
 const diff = (oldHistory, newHistory) => {
