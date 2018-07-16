@@ -1,14 +1,14 @@
 const { getPlayerReport } = require('./report');
 const transactionHistory = require('../models/transactionHistory');
+const { hashTrade } = require('../lib/hash');
 
 const WATCH_INTERVAL = 60000;
 
-const determineIfChanged = () => {
-  
+const determineIfChanged = (data, collection) => {
+  const lastTradeHash = hashTrade(data[0]);
+
   // find latest document by insertDate
-
-
-  // do diffing later
+  // compare hashes
 };
 
 const updateHistory = (hasChanged) => {
@@ -37,7 +37,7 @@ const watchPlayer = (url, db) => {
     if (hasChanged) {
       const { oldHistory, newHistory } = await updateHistory(data, collection, hasChanged);
       const newTrades = await diff(oldHistory, newHistory);
-      await alertBroker(hasChanged);
+      await alertBroker(newTrades);
     }
   }, WATCH_INTERVAL);
 };

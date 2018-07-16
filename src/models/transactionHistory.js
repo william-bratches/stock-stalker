@@ -1,9 +1,9 @@
-const crypto = require('crypto');
+const { hashTrade } = require('../lib/hash');
 
-const getPlayerIdFromUrl = (url) => {
+function getPlayerIdFromUrl(url) {
   const parsedUrl = new URL(url);
   return parsedUrl.searchParams.get('p');
-};
+}
 
 function transactionHistory(db) {
   const collection = db.collection('transactionHistories');
@@ -21,12 +21,12 @@ function transactionHistory(db) {
     },
     insert(data, url) {
       const lastTrade = data[0];
-      const lastTradeDetails = `${lastTrade.symbol}-${lastTrade.type}-${lastTrade.price}-${lastTrade.amount}-${lastTrade.orderDate}`;
+      const hash = hashTrade(lastTrade);
       const doc = {
         data: data.slice(),
         insertStamp: new Date(),
-        hash: crypto.createHash('md5').update(lastTradeDetails).digest('hex'),
         playerId: getPlayerIdFromUrl(url),
+        hash,
         url,
       };
 
