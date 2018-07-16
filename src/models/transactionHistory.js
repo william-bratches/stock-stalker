@@ -4,8 +4,8 @@ function transactionHistory(db) {
     find() {
 
     },
-    insert() {
-
+    insert(doc) {
+      return collection.insert(doc);
     },
     update() {
 

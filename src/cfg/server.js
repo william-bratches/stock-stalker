@@ -9,7 +9,6 @@ module.exports = () => {
     // eslint-disable-next-line
     console.log('Mongo has connected to server.');
     const db = client.db(env.mongo.dbName);
-    initModels(db);
     app.start(env.port, db);
   });
 };
