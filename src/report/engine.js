@@ -3,16 +3,31 @@ const transactionHistory = require('../models/transactionHistory');
 
 const WATCH_INTERVAL = 60000;
 
-const hasChanged = () => {
+const determineIfChanged = () => {
+  // find latest document by insertDate
 
+
+  // do diffing later
+};
+
+const updateHistory = (hasChanged) => {
+  // if hashes don't match, insert
+  // if not, skip
+
+  // do diffing here?
+};
+
+const alertBroker = () => {
+  // twilio integration?
 };
 
 const watchPlayer = (url, db) => {
   setInterval(async () => {
     const data = await getPlayerReport(url);
     const collection = transactionHistory(db);
-    // TODO: fancy parsing here, if timestamp is greater insert, etc.
-    collection.insert(data);
+    const hasChanged = await determineIfChanged(data, collection);
+    await updateHistory(data, collection, hasChanged);
+    await alertBroker(hasChanged);
   }, WATCH_INTERVAL);
 };
 
