@@ -27,12 +27,12 @@ function transactionHistory(db) {
       };
 
       return new Promise((resolve, reject) => {
-        collection.insertOne(doc, (err, status) => {
+        collection.insertOne(doc, (err) => {
           if (err) {
             return reject(err);
           }
 
-          return resolve(status);
+          return resolve(doc);
         });
       });
     },

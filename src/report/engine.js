@@ -10,17 +10,14 @@ const getLatestHistory = async (collection, url) => {
   await collection.find(playerId);
 };
 
-const determineIfChanged = async (data, lastDocument) => {
+const determineIfChanged = (data, lastDocument) => {
   const newTradeHash = hashTrade(data[0]);
   const oldTradeHash = lastDocument.hash;
   return newTradeHash !== oldTradeHash;
 };
 
-const updateHistory = (collection) => {
-  return
-
-
-  // return new document after insert
+const updateHistory = async (collection, data, url) => {
+  await collection.insert(data, url);
 };
 
 const diff = (oldHistory, newHistory) => {
@@ -37,10 +34,10 @@ const watchPlayer = (url, db) => {
     const data = await getPlayerReport(url);
     const collection = transactionHistory(db);
     const oldHistory = await getLatestHistory(collection, url);
-    const hasChanged = await determineIfChanged(data, oldHistory);
+    const hasChanged = determineIfChanged(data, oldHistory);
 
     if (hasChanged) {
-      const newHistory = await updateHistory(data, collection, hasChanged);
+      const newHistory = await updateHistory(collection, data, url);
       const newTrades = await diff(oldHistory, newHistory);
       await alertBroker(newTrades);
     }
