@@ -4,6 +4,7 @@ const transactionHistory = require('../models/transactionHistory');
 const WATCH_INTERVAL = 60000;
 
 const determineIfChanged = () => {
+  
   // find latest document by insertDate
 
 
