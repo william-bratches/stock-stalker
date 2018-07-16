@@ -43,6 +43,7 @@ module.exports = () => {
       const parsedAmount = parseInt(transaction[amount].replace(/,/g, ''), 10);
 
       return Object.assign({}, transaction, {
+        [amount]: parseInt(transaction[amount], 10),
         [orderDate]: parseDate(transaction[orderDate]).toString(),
         [transactionDate]: parseDate(transaction[transactionDate]).toString(),
         [volume]: `$${Math.ceil((parsedPrice * parsedAmount) * 100) / 100}`,
