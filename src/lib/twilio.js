@@ -2,6 +2,8 @@ const twilio = require('twilio');
 const env = require('../cfg/env');
 const log = require('./logger');
 
+console.log(env.twilio);
+
 const client = twilio(env.twilio.sid, env.twilio.authToken);
 
 const sendMessage = (body) => {

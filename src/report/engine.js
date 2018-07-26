@@ -2,6 +2,7 @@ const { getPlayerReport } = require('./report');
 const transactionHistory = require('../models/transactionHistory');
 const { hashTrade } = require('../lib/hash');
 const { getPlayerIdFromUrl } = require('../lib/parsing');
+const sendMessage = require('../lib/twilio');
 
 // const WATCH_INTERVAL = 30000;
 
@@ -63,6 +64,7 @@ const startReporting = (db) => {
   const tempHardcodedUrl = 'http://www.marketwatch.com/game/official-reddit-challenge-2018/portfolio?p=2349626&name=Notice%20Me%20Sempai';
   // watchPlayer(tempHardcodedUrl, db);
   mainSequence(tempHardcodedUrl, db);
+  sendMessage('sup brudda');
 };
 
 module.exports = startReporting;

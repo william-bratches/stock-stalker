@@ -1,10 +1,12 @@
 # stock-stalker
-WIP. An experiment with pupeteer and pattern recognition...
-
+Track fake players on the virtual stock market.
 
 # Ideas
 * twilio integration
 * re-write using pure scraping w/o headless chrome - will improve performance
+# MVP ^
+
+
 * most traded stocks? aggregate ALL trades across ALL games via web crawling?
 
 * think about portfolio matching system - can analyze holdings statically, actually
