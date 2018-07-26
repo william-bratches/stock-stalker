@@ -3,20 +3,17 @@ const transactionHistory = require('../models/transactionHistory');
 const { hashTrade } = require('../lib/hash');
 const { getPlayerIdFromUrl } = require('../lib/parsing');
 
-const WATCH_INTERVAL = 30000;
+// const WATCH_INTERVAL = 30000;
 
 const getLatestHistory = async (collection, url) => {
-  console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$');
   const playerId = getPlayerIdFromUrl(url);
-  console.log(playerId);
   const latestRecord = await collection.find(playerId);
-  console.log(latestRecord);
   return latestRecord;
 };
 
 const determineIfChanged = (data, lastDocument) => {
   const newTradeHash = hashTrade(data[0]);
-  const oldTradeHash = lastDocument.hash; // TODO: probably bc it doesn't exist!
+  const oldTradeHash = lastDocument.hash;
   return newTradeHash !== oldTradeHash;
 };
 
@@ -34,26 +31,19 @@ const diff = (oldHistory, newHistory) => {
 };
 
 const alertBroker = (trades) => {
-  console.log(trades);
-  console.log('alerting broker!');
   // twilio integration?
 };
 
 const mainSequence = async (url, db) => {
-  console.log('triggering watch sequence!');
   const data = await getPlayerReport(url);
   const collection = transactionHistory(db);
   const oldHistory = await getLatestHistory(collection, url);
-  console.log('******************');
-  console.log(oldHistory);
-  console.log('--------------');
-  if (!oldHistory) {
+  if (!oldHistory || oldHistory.length < 1) {
     updateHistory(collection, data, url);
     return;
   }
 
   const hasChanged = determineIfChanged(data, oldHistory);
-  console.log(hasChanged);
 
   if (hasChanged) {
     const newHistory = await updateHistory(collection, data, url);

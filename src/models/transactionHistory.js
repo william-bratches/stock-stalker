@@ -15,7 +15,7 @@ function transactionHistory(db) {
               return reject(err);
             }
 
-            return resolve(doc);
+            return resolve(doc[0]);
           });
       });
     },

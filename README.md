@@ -3,13 +3,14 @@ WIP. An experiment with pupeteer and pattern recognition...
 
 
 # Ideas
-* NOW ON: building differ and poller to tell when trade has happened
-* twilio and mongo integration? // TODO
+* twilio integration
+* re-write using pure scraping w/o headless chrome - will improve performance
+* most traded stocks? aggregate ALL trades across ALL games via web crawling?
 
-* then think about "diffing engine" for intelligent trades/portfolio matching
+* think about portfolio matching system - can analyze holdings statically, actually
+
 * is there a free stock trading api?
 * use dependency injection in trade DSL for different platforms - could this be a platform for others to use?
-* most traded stocks? aggregate ALL trades across ALL games via web crawling?
 
 # TODO
 * dynamic player selection (or, input player)
