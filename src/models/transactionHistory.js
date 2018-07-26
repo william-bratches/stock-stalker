@@ -6,13 +6,17 @@ function transactionHistory(db) {
   return {
     find(playerId) {
       return new Promise((resolve, reject) => {
-        return collection.findOne({ playerId }).sort({ insertStamp: -1 }, (err, doc) => {
-          if (err) {
-            return reject(err);
-          }
+        return collection
+          .find({ playerId })
+          .sort({ insertStamp: -1 })
+          .limit(1)
+          .toArray((err, doc) => {
+            if (err) {
+              return reject(err);
+            }
 
-          return resolve(doc);
-        });
+            return resolve(doc);
+          });
       });
     },
     insert(data, url) {

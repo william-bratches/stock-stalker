@@ -3,7 +3,7 @@ const transactionHistory = require('../models/transactionHistory');
 const { hashTrade } = require('../lib/hash');
 const { getPlayerIdFromUrl } = require('../lib/parsing');
 
-const WATCH_INTERVAL = 10000;
+const WATCH_INTERVAL = 30000;
 
 const getLatestHistory = async (collection, url) => {
   const playerId = getPlayerIdFromUrl(url);
