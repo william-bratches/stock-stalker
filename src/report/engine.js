@@ -3,7 +3,7 @@ const transactionHistory = require('../models/transactionHistory');
 const { hashTrade } = require('../lib/hash');
 const { getPlayerIdFromUrl } = require('../lib/parsing');
 
-const WATCH_INTERVAL = 60000;
+const WATCH_INTERVAL = 10000;
 
 const getLatestHistory = async (collection, url) => {
   const playerId = getPlayerIdFromUrl(url);
@@ -29,16 +29,27 @@ const diff = (oldHistory, newHistory) => {
   return intersection > 0 ? newHashes.slice(intersection) : [];
 };
 
-const alertBroker = () => {
+const alertBroker = (trades) => {
+  console.log(trades);
+  console.log('alerting broker!');
   // twilio integration?
 };
 
 const watchPlayer = (url, db) => {
   setInterval(async () => {
+    console.log('***************************');
+    console.log('triggering watch sequence!')
     const data = await getPlayerReport(url);
+    console.log(data);
+    console.log('--------------')
     const collection = transactionHistory(db);
+    console.log(collection);
+    console.log('--------------')
     const oldHistory = await getLatestHistory(collection, url);
+    console.log(oldHistory);
+    console.log('--------------')
     const hasChanged = determineIfChanged(data, oldHistory);
+    console.log(hasChanged);
 
     if (hasChanged) {
       const newHistory = await updateHistory(collection, data, url);
@@ -54,6 +65,4 @@ const startReporting = (db) => {
   watchPlayer(tempHardcodedUrl, db);
 };
 
-module.exports = {
-  startReporting,
-};
+module.exports = startReporting;

@@ -1,6 +1,8 @@
-function getPlayerIdFromUrl(url) {
-  const parsedUrl = new URL(url);
-  return parsedUrl.searchParams.get('p');
+const url = require('url');
+
+function getPlayerIdFromUrl(profileUrl) {
+  const parsedUrl = url.parse(profileUrl);
+  return parsedUrl.query.p;
 }
 
 module.exports = {
