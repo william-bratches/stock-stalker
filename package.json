@@ -2,7 +2,7 @@
   "name": "stock-stalker",
   "version": "1.0.0",
   "description": "WIP. An experiment with pupeteer and pattern recognition...",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
     "start": "node bin/scripts/start.js",
     "shutdown": "node bin/scripts/shutdown.js",
