@@ -2,7 +2,6 @@
 Track fake players on the virtual stock market.
 
 # Ideas
-* twilio integration
 * re-write using pure scraping w/o headless chrome - will improve performance
 # MVP ^
 

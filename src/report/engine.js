@@ -32,7 +32,9 @@ const diff = (oldHistory, newHistory) => {
 };
 
 const alertBroker = (trades) => {
-  // twilio integration?
+  console.log(trades);
+  // TODO: parse trades in text-readable format
+  sendMessage(trades);
 };
 
 const mainSequence = async (url, db) => {
