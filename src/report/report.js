@@ -7,10 +7,8 @@ const GAME_NAME = 'official-reddit-challenge-2018';
 
 const getTopPlayerUrl = async () => {
   const html = await axios.get(`/game/${GAME_NAME}`);
-  const dom = new JSDOM(html.data);
-  const { document } = dom.window;
-  const url = document.querySelector('tr td').innerHTML;//[1].querySelector('a').href;
-  console.log(url);
+  const { document } = new JSDOM(html.data).window;
+  const url = document.querySelectorAll('tr td')[1].querySelector('a').href;
   return url;
 };
 
