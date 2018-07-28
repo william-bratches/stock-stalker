@@ -1,4 +1,4 @@
-const { getPlayerReport, getTopPlayerUrl } = require('./report');
+const { getPlayerReport } = require('./report');
 const transactionHistory = require('../models/transactionHistory');
 const { hashTrade } = require('../lib/hash');
 const { getPlayerIdFromUrl } = require('../lib/parsing');

@@ -21,10 +21,11 @@ const parseDate = (dateString) => {
 
 const parseTransactionRow = (node) => {
   const cells = node.querySelectorAll('td');
+  // innertext doesn't work here:
   const acc = {};
   cells.forEach((cell, index) => {
     const label = tableLabelMap[index];
-    return Object.assign(acc, { [label]: cell.innerText });
+    return Object.assign(acc, { [label]: cell.textContent.trim() });
   });
 
   return acc;
