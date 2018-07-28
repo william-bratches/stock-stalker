@@ -1,4 +1,5 @@
 const jsdom = require('jsdom');
+
 const { JSDOM } = jsdom;
 const parseHistoryFromDom = require('./domParser');
 const axios = require('../lib/axios');

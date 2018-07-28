@@ -38,10 +38,8 @@ const alertBroker = (trades) => {
 };
 
 const mainSequence = async (url, db) => {
-  const result = await getTopPlayerUrl();
-  console.log(result);
-  return;
   const data = await getPlayerReport(url);
+  console.log(data);
   const collection = transactionHistory(db);
   const oldHistory = await getLatestHistory(collection, url);
   if (!oldHistory || oldHistory.length < 1) {
@@ -50,6 +48,7 @@ const mainSequence = async (url, db) => {
   }
 
   const hasChanged = determineIfChanged(data, oldHistory);
+  console.log(hasChanged);
 
   if (hasChanged) {
     const newHistory = await updateHistory(collection, data, url);
