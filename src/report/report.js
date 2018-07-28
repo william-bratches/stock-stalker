@@ -12,16 +12,15 @@ const getTopPlayerUrl = async () => {
   return url;
 };
 
-// const getPlayerReport = async (url) => {
-//   const html = await axios.get(url);
-//   const $ = cheerio.load(html);
-//
-//   const history = await page.evaluate(parseHistoryFromDom);
-//   await browser.close();
-//   return history;
-// };
+const getPlayerReport = async (url) => {
+  const html = await axios.get(url);
+  const { document } = new JSDOM(html.data).window;
+
+  const history = parseHistoryFromDom(document);
+  return history;
+};
 
 module.exports = {
   getTopPlayerUrl,
-  // getPlayerReport,
+  getPlayerReport,
 };
