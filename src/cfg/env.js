@@ -11,5 +11,8 @@ module.exports = {
     source: process.env.TWILIO_SOURCE,
     destination: process.env.TWILIO_DESTINATION,
   },
+  mw: {
+    url: 'https://www.marketwatch.com',
+  },
   port: '7111',
 };
