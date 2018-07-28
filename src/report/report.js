@@ -1,4 +1,5 @@
-const cheerio = require('cheerio');
+const jsdom = require('jsdom');
+const { JSDOM } = jsdom;
 const parseHistoryFromDom = require('./domParser');
 const axios = require('../lib/axios');
 
@@ -6,10 +7,9 @@ const GAME_NAME = 'official-reddit-challenge-2018';
 
 const getTopPlayerUrl = async () => {
   const html = await axios.get(`/game/${GAME_NAME}`);
-  console.log(html);
-  const $ = cheerio.load(html);
-
-  const url = $('tr td')[1]//.querySelector('a').href;
+  const dom = new JSDOM(html.data);
+  const { document } = dom.window;
+  const url = document.querySelector('tr td').innerHTML;//[1].querySelector('a').href;
   console.log(url);
   return url;
 };
