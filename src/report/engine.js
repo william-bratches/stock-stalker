@@ -19,7 +19,8 @@ const determineIfChanged = (data, lastDocument) => {
 };
 
 const updateHistory = async (collection, data, url) => {
-  await collection.insert(data, url);
+  const doc = await collection.insert(data, url);
+  return doc;
 };
 
 const diff = (oldHistory, newHistory) => {
@@ -28,7 +29,7 @@ const diff = (oldHistory, newHistory) => {
   const newHashes = newHistory.data.map(hashTrade);
 
   const intersection = newHashes.findIndex(hash => hash === previousHash);
-  return intersection > 0 ? newHashes.slice(intersection) : [];
+  return intersection > 0 ? newHistory.slice(0, intersection) : [];
 };
 
 const alertBroker = (trades) => {
@@ -47,6 +48,7 @@ const mainSequence = async (url, db) => {
   }
 
   const hasChanged = determineIfChanged(data, oldHistory);
+  console.log('hasChanged', hasChanged);
 
   if (hasChanged) {
     const newHistory = await updateHistory(collection, data, url);
@@ -63,7 +65,8 @@ const mainSequence = async (url, db) => {
 
 const startReporting = (db) => {
   // for now, just a hardcoded url for testing. I'll figure out dynamic stuff later
-  const tempHardcodedUrl = 'http://www.marketwatch.com/game/official-reddit-challenge-2018/portfolio?p=2349626&name=Notice%20Me%20Sempai';
+  // const tempHardcodedUrl = 'http://www.marketwatch.com/game/official-reddit-challenge-2018/portfolio?p=2349626&name=Notice%20Me%20Sempai';
+  const tempHardcodedUrl = 'https://www.marketwatch.com/game/official-reddit-challenge-2018/portfolio?p=1037665&name=William%20Bratches';
   // watchPlayer(tempHardcodedUrl, db);
   mainSequence(tempHardcodedUrl, db);
 };
