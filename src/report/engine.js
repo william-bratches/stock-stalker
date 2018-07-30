@@ -4,7 +4,7 @@ const { hashTrade } = require('../lib/hash');
 const { getPlayerIdFromUrl } = require('../lib/parsing');
 const sendMessage = require('../lib/twilio');
 
-// const WATCH_INTERVAL = 30000;
+const WATCH_INTERVAL = 10000;
 
 const getLatestHistory = async (collection, url) => {
   const playerId = getPlayerIdFromUrl(url);
@@ -29,13 +29,20 @@ const diff = (oldHistory, newHistory) => {
   const newHashes = newHistory.data.map(hashTrade);
 
   const intersection = newHashes.findIndex(hash => hash === previousHash);
-  return intersection > 0 ? newHistory.slice(0, intersection) : [];
+  return intersection > 0 ? newHistory.data.slice(0, intersection) : [];
 };
 
 const alertBroker = (trades) => {
-  console.log(trades);
-  // TODO: parse trades in text-readable format
-  sendMessage(trades);
+  const semanticTrades = trades.map((trade) => {
+    return `${trade.type} ${trade.amount} ${trade.symbol} @ ${trade.price}`;
+  });
+
+  const unrolled = semanticTrades.reduce((next, acc) => {
+    return `${acc};;\n${next}`;
+  }, '');
+
+  console.log(unrolled);
+  sendMessage(unrolled);
 };
 
 const mainSequence = async (url, db) => {
@@ -57,18 +64,16 @@ const mainSequence = async (url, db) => {
   }
 };
 
-// const watchPlayer = (url, db) => {
-//   setInterval(async () => {
-//     mainSequence();
-//   }, WATCH_INTERVAL);
-// };
+const watchPlayer = (url, db) => {
+  setInterval(async () => {
+    mainSequence(url, db);
+  }, WATCH_INTERVAL);
+};
 
 const startReporting = (db) => {
   // for now, just a hardcoded url for testing. I'll figure out dynamic stuff later
-  // const tempHardcodedUrl = 'http://www.marketwatch.com/game/official-reddit-challenge-2018/portfolio?p=2349626&name=Notice%20Me%20Sempai';
-  const tempHardcodedUrl = 'https://www.marketwatch.com/game/official-reddit-challenge-2018/portfolio?p=1037665&name=William%20Bratches';
-  // watchPlayer(tempHardcodedUrl, db);
-  mainSequence(tempHardcodedUrl, db);
+  const tempHardcodedUrl = 'https://www.marketwatch.com/game/official-reddit-challenge-2018/portfolio?p=1321636&name=Kevin%20%20Vri';
+  watchPlayer(tempHardcodedUrl, db);
 };
 
 module.exports = startReporting;
