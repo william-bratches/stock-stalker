@@ -7,7 +7,7 @@ const startMongo = (cb = defaultCb) => {
   const mongo = spawn('mongod', ['--dbpath=./bin/db']);
 
   mongo.stdout.on('data', (data) => {
-    console.log(data);
+    console.log(data.toString());
     if (data.toString().indexOf('waiting for connections on port') > -1) {
       // eslint-disable-next-line
       console.log('MongoDB started and ready.');
