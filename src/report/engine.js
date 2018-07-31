@@ -59,7 +59,9 @@ const mainSequence = async (url, db) => {
 
   if (hasChanged) {
     const newHistory = await updateHistory(collection, data, url);
+    console.log('newHistory');
     const newTrades = await diff(oldHistory, newHistory);
+    console.log('newTrades');
     await alertBroker(newTrades);
   }
 };
