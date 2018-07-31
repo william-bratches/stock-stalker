@@ -74,7 +74,7 @@ const watchPlayer = (url, db) => {
 
 const startReporting = (db) => {
   // for now, just a hardcoded url for testing. I'll figure out dynamic stuff later
-  const tempHardcodedUrl = 'https://www.marketwatch.com/game/official-reddit-challenge-2018/portfolio?p=1321636&name=Kevin%20%20Vri';
+  const tempHardcodedUrl = 'https://www.marketwatch.com/game/official-reddit-challenge-2018/portfolio?p=1869479&name=Marcos%20Izquierdo';
   watchPlayer(tempHardcodedUrl, db);
 };
 
