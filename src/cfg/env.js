@@ -12,6 +12,8 @@ module.exports = {
     destination: process.env.TWILIO_DESTINATION,
   },
   mw: {
+    username: process.env.MW_USERNAME,
+    password: process.env.MW_PASSWORD,
     url: 'https://www.marketwatch.com',
   },
   port: '7111',

@@ -3,6 +3,7 @@ const transactionHistory = require('../models/transactionHistory');
 const { hashTrade } = require('../lib/hash');
 const { getPlayerIdFromUrl } = require('../lib/parsing');
 const sendMessage = require('../lib/twilio');
+const executeTrade = require('../trade/executeTrade');
 
 const WATCH_INTERVAL = 10000;
 
@@ -41,7 +42,6 @@ const alertBroker = (trades) => {
     return `${acc};;\n${next}`;
   }, '');
 
-  console.log(unrolled);
   sendMessage(unrolled);
 };
 
@@ -55,27 +55,25 @@ const mainSequence = async (url, db) => {
   }
 
   const hasChanged = determineIfChanged(data, oldHistory);
-  console.log('hasChanged', hasChanged);
 
   if (hasChanged) {
     const newHistory = await updateHistory(collection, data, url);
-    console.log('newHistory');
     const newTrades = await diff(oldHistory, newHistory);
-    console.log('newTrades');
     await alertBroker(newTrades);
   }
 };
 
-const watchPlayer = (url, db) => {
+const watchPlayer = (url, db, browser) => {
   setInterval(async () => {
-    mainSequence(url, db);
+    const newTrades = await mainSequence(url, db);
+    newTrades.forEach(trade => executeTrade(trade, browser));
   }, WATCH_INTERVAL);
 };
 
 const startReporting = (db) => {
   // for now, just a hardcoded url for testing. I'll figure out dynamic stuff later
   const tempHardcodedUrl = 'https://www.marketwatch.com/game/official-reddit-challenge-2018/portfolio?p=2167380&name=jj%20Kinetik';
-  watchPlayer(tempHardcodedUrl, db);
+  watchPlayer(tempHardcodedUrl, db, browser);
 };
 
 module.exports = startReporting;
