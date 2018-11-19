@@ -1,5 +1,14 @@
+const cfg = require('../cfg/env');
+
 const loginWithCredentials = async (browser) => {
   const page = await browser.newPage();
   await page.goto('https://www.marketwatch.com/');
+  await page.waitForNavigation();
+  await page.click('.btn-login');
+  await page.waitFor('.sign-in-title');
+  await page.type('#username', cfg.mw.username);
+  await page.type('#password', cfg.mw.password);
+  await page.click('.basic-login-submit');
+};
 
-}
+module.exports = loginWithCredentials;
