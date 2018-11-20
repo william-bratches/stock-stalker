@@ -31,7 +31,7 @@ const parseTransactionRow = (node) => {
   return acc;
 };
 
-const massage = (history) => {
+const massage = (history, currentNetWorth) => {
   return history.map((transaction) => {
     const orderDate = tableLabelMap[1];
     const transactionDate = tableLabelMap[2];
@@ -52,7 +52,7 @@ const massage = (history) => {
 
 const parseHistoryFromDom = (document) => {
   const history = []; // reduce doesn't work on nodeLists.
-  document.querySelectorAll('.ranking')[0].querySelector('tbody').querySelectorAll('tr').forEach((node) => {
+  document.querySelectorAll('.ranking')[0].querySeletor('tbody').querySelectorAll('tr').forEach((node) => {
     const transactionRecord = parseTransactionRow(node);
     history.push(transactionRecord);
   });
