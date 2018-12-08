@@ -3,7 +3,7 @@ const transactionHistory = require('../models/transactionHistory');
 const { hashTrade } = require('../lib/hash');
 const { getPlayerIdFromUrl } = require('../lib/parsing');
 const sendMessage = require('../lib/twilio');
-const executeTrade = require('../trade/executeTrade');
+// const executeTrade = require('../trade/executeTrade');
 
 const WATCH_INTERVAL = 10000;
 
@@ -45,35 +45,34 @@ const alertBroker = (trades) => {
   sendMessage(unrolled);
 };
 
-const mainSequence = async (url, db) => {
-  const data = await getPlayerReport(url);
+const mainSequence = async (player, db) => {
+  const data = await getPlayerReport(player.url);
   const collection = transactionHistory(db);
-  const oldHistory = await getLatestHistory(collection, url);
+  const oldHistory = await getLatestHistory(collection, player.url);
   if (!oldHistory || oldHistory.length < 1) {
-    updateHistory(collection, data, url);
+    updateHistory(collection, data, player.url);
     return;
   }
 
   const hasChanged = determineIfChanged(data, oldHistory);
 
   if (hasChanged) {
-    const newHistory = await updateHistory(collection, data, url);
+    const newHistory = await updateHistory(collection, data, player.url);
     const newTrades = await diff(oldHistory, newHistory);
     await alertBroker(newTrades);
   }
 };
 
-const watchPlayer = (url, db, browser) => {
+const watchPlayer = (player, db) => {
   setInterval(async () => {
-    const newTrades = await mainSequence(url, db);
-    newTrades.forEach(trade => executeTrade(trade, browser));
+    // const newTrades = await mainSequence(player, db);
+    // newTrades.forEach(trade => executeTrade(trade, player));
   }, WATCH_INTERVAL);
 };
 
-const startReporting = (db) => {
+const startReporting = (db, player) => {
   // for now, just a hardcoded url for testing. I'll figure out dynamic stuff later
-  const tempHardcodedUrl = 'https://www.marketwatch.com/game/official-reddit-challenge-2018/portfolio?p=1037665&name=William%20Bratches';
-  watchPlayer(tempHardcodedUrl, db);
+  watchPlayer(player.url, db);
 };
 
 module.exports = startReporting;

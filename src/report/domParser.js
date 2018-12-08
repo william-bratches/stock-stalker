@@ -31,7 +31,7 @@ const parseTransactionRow = (node) => {
   return acc;
 };
 
-const massage = (history, currentNetWorth) => {
+const massage = (history) => {
   return history.map((transaction) => {
     const orderDate = tableLabelMap[1];
     const transactionDate = tableLabelMap[2];

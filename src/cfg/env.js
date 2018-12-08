@@ -1,6 +1,10 @@
 require('dotenv').config({ silent: true });
 
 module.exports = {
+  alpaca: {
+    key: process.env.ALPACA_SECRET,
+    secret: process.env.ALPACA_SECRET,
+  },
   mongo: {
     dbName: 'stockStalker',
     url: 'mongodb://localhost:27017',
