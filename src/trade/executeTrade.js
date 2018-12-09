@@ -1,20 +1,30 @@
 const alpaca = require('../trade');
+const calculateSharesToTrade = require('./calculateSharesToTrade');
+
+const determineTradeType = (type) => {
+  // Buy, Sell - ignore COVER and SHORT
+  const lowcaseType = type.toLowerCase();
+  if (lowcaseType === 'buy' || lowcaseType === 'sell') {
+    return lowcaseType;
+  }
+};
 
 const executeTrade = (trade, player) => {
   const sharesToTrade = calculateSharesToTrade(trade, player);
-  alpaca.createOrder({
-    symbol: trade.symbol,
-    qty: sharesToTrade,
-    side: 'buy' | 'sell',
-    type: 'market' | 'limit' | 'stop' | 'stop_limit',
-    time_in_force: 'day' | 'gtc' | 'opg' | 'ioc',
-    limit_price: number,
-    stop_price: number,
-    client_order_id: string // optional
-  }).then(order => {
-    console.log(order);
-  })
-}
+  const tradeType = determineTradeType(trade.type);
+  if (tradeType) {
+    alpaca.createOrder({
+      symbol: trade.symbol,
+      qty: sharesToTrade,
+      side: tradeType,
+      type: 'market',
+      time_in_force: 'gtc',
+    }).then((order) => {
+      console.log(order);
+    });
+  }
+  console.log(`Order was ${trade.type}, not executing`);
+};
 
 
 module.exports = executeTrade;

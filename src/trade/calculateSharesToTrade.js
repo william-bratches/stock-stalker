@@ -1,4 +1,4 @@
-const calculateSharesToTrade = async (trade) => {
+const calculateSharesToTrade = async (trade, player) => {
   // if buy or short order,  calculate based on net worth
   // if sell, just sell all of it
   const volumeAsNumber = Number(trade.volume.replace(/[^0-9.-]+/g, ''));
