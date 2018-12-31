@@ -15,7 +15,7 @@ const executeTrade = (trade, player) => {
   if (tradeType) {
     alpaca.createOrder({
       symbol: trade.symbol,
-      qty: sharesToTrade,
+      qty: tradeType === 'buy' ? sharesToTrade : 99999999999, // if sell, just sell all of it
       side: tradeType,
       type: 'market',
       time_in_force: 'gtc',

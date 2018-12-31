@@ -2,7 +2,7 @@ require('dotenv').config({ silent: true });
 
 module.exports = {
   alpaca: {
-    key: process.env.ALPACA_SECRET,
+    key: process.env.ALPACA_KEY,
     secret: process.env.ALPACA_SECRET,
   },
   mongo: {
