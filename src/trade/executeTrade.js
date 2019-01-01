@@ -20,6 +20,7 @@ const executeTrade = (trade, player) => {
       type: 'market',
       time_in_force: 'gtc',
     }).then((order) => {
+      // eslint-disable-next-line
       console.log(order);
     });
   }
