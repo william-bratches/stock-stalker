@@ -3,7 +3,7 @@ const transactionHistory = require('../models/transactionHistory');
 const { hashTrade } = require('../lib/hash');
 const { getPlayerIdFromUrl } = require('../lib/parsing');
 const sendMessage = require('../lib/twilio');
-// const executeTrade = require('../trade/executeTrade');
+const executeTrade = require('../trade/executeTrade');
 
 const WATCH_INTERVAL = 10000;
 
@@ -65,8 +65,8 @@ const mainSequence = async (player, db) => {
 
 const watchPlayer = (player, db) => {
   setInterval(async () => {
-    // const newTrades = await mainSequence(player, db);
-    // newTrades.forEach(trade => executeTrade(trade, player));
+    const newTrades = await mainSequence(player, db);
+    newTrades.forEach(trade => executeTrade(trade, player));
   }, WATCH_INTERVAL);
 };
 
