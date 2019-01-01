@@ -20,10 +20,8 @@ const calculateSharesToTrade = async (trade, target) => {
   const protagonistBuyingPower = await getProtagonistBuyingPower();
   const targetBuyingPower = getTargetBuyingPower(target);
   const volumeAsNumber = Number(trade.volume.replace(/[^0-9.-]+/g, ''));
-  const percentNetWorth = volumeAsNumber / targetBuyingPower;
-  // RoundUp((target  cash * percent Net worth) / stock price)
+  const percentBuyingPower = volumeAsNumber / targetBuyingPower;
+  return Math.round((protagonistBuyingPower * percentBuyingPower) / trade.price));
 };
 
-module.exports = {
-  getProtagonistCash,
-};
+module.exports = calculateSharesToTrade;
