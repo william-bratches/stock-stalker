@@ -21,7 +21,7 @@ const calculateSharesToTrade = async (trade, target) => {
   const targetBuyingPower = getTargetBuyingPower(target);
   const volumeAsNumber = Number(trade.volume.replace(/[^0-9.-]+/g, ''));
   const percentBuyingPower = volumeAsNumber / targetBuyingPower;
-  return Math.round((protagonistBuyingPower * percentBuyingPower) / trade.price));
+  return Math.round((protagonistBuyingPower * percentBuyingPower) / trade.price);
 };
 
 module.exports = calculateSharesToTrade;
